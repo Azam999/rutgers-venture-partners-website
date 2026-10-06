@@ -7,11 +7,11 @@ export function Lockup({ size = "sm" }: { size?: "sm" | "lg" }) {
   return (
     <Link href="/" className="inline-flex items-center gap-3 text-cream">
       <Image
-        src="/logo/crest-160.png"
+        src="/logo/crest-160.webp"
         alt=""
         width={160}
         height={160}
-        className={large ? "size-12" : "size-9"}
+        className={large ? "size-14" : "size-10"}
       />
       <span
         className={`font-display font-semibold uppercase leading-[1.08] tracking-display ${

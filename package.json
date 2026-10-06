@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "npx serve@14 out",
     "lint": "eslint",
-    "fetch-assets": "node scripts/fetch-assets.mjs"
+    "fetch-assets": "node scripts/fetch-assets.mjs",
+    "logo": "node scripts/build-logo.mjs"
   },
   "dependencies": {
     "next": "16.3.8",

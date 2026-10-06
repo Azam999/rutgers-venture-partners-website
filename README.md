@@ -49,19 +49,27 @@ Search the repo for `TODO`:
 ## Images
 
 `scripts/fetch-assets.mjs` was a one-time migration. It read the old rutgersvip.com,
-downloaded every image it used and wrote web-ready copies into `public/` (and the
-favicon, app icons and social preview image into `app/`). It recolours partner logos to a
-single cream so mismatched files look like one set, and cuts the crest out of its dark
-square. The site makes no requests to the old domain.
+downloaded every image it used and wrote web-ready copies into `public/`. It recolours
+partner logos to a single cream so mismatched files look like one set. The site makes no
+requests to the old domain.
 
 The old site also had more photos than this one shows (eight former analysts and a
 15-photo club carousel). All of them were kept in `public/` so they can be swapped in
 from `content/` later.
 
-**The crest needs a better source file.** The only crest available is about 660px
-across, so it looks slightly soft on large high-DPI screens. A vector (SVG) or 2000px+
-export would fix it: replace `public/logo/crest.png` (transparent background) and the
-icons in `app/`.
+### The crest
+
+`public/logo.png` is the master crest: square, transparent background. Everything else
+is generated from it by `npm run logo`:
+
+- the landing-screen and nav/footer crests in `public/logo/`;
+- the favicon and app icon, which use only the red centre disc because the ring
+  lettering is unreadable at tab size;
+- the home-screen icon and the link-preview image in `app/`.
+
+To update the logo, replace `public/logo.png` and run `npm run logo`. The current file is
+756px; a larger export (1500px+) or an SVG would keep the landing crest perfectly sharp
+on big high-DPI screens.
 
 ## Brand
 

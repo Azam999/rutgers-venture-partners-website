@@ -15,8 +15,9 @@
  *      public/vip-gallery/    1600px-wide WebP
  *      public/partners/       cream-on-transparent PNG, so mismatched logo files
  *                             (white boxes, black boxes, a 3D render) read as one set
- *      public/logo/           transparent crest cutout, full size and nav size
- *      app/                   favicon.ico, icon.png, apple-icon.png, opengraph-image.png
+ *
+ * The crest is not taken from the old site (its copy was low-res): the club's master
+ * file is public/logo.png, and scripts/build-logo.mjs makes the icons from it.
  *
  * The old site lists more photos than the new one shows (former analysts, a 15-photo
  * club carousel). All of them are mirrored so the club can swap photos by editing
@@ -31,14 +32,12 @@ import sharp from "sharp";
 const OLD_SITE = "https://www.rutgersvip.com";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const PUBLIC = path.join(ROOT, "public");
-const APP = path.join(ROOT, "app");
 
-const RVP_RED = [0xbe, 0x13, 0x13];
 const CREAM = [0xf5, 0xf1, 0xe4];
 
 // If the old page yields fewer than this many files per folder, its markup has
 // changed. Stop instead of shipping a half-empty site.
-const MIN_COUNT = { headshots: 20, partners: 11, "club-gallery": 6, "vip-gallery": 6, logos: 1 };
+const MIN_COUNT = { headshots: 20, partners: 11, "club-gallery": 6, "vip-gallery": 6 };
 
 // How to pull a single-colour mask out of each partner logo file.
 //   alpha          file already has transparency; use its shape
@@ -59,9 +58,6 @@ const PARTNER_TREATMENT = {
   "norwest.png": "light-on-dark",
   "rbv.jpeg": "warm-on-blue",
 };
-
-// The two crest files on the old site are byte-for-byte the same image; prefer this one.
-const CREST_SOURCE = "/logos/vc-logo-transparent.png";
 
 // ---------------------------------------------------------------------------
 
@@ -97,9 +93,6 @@ await mirror("partners", sets.get("partners"), async (buf, name, file) => {
   if (!treatment) fail(`No logo treatment for partners/${file}; add it to PARTNER_TREATMENT.`);
   return { name: `${name}.png`, data: await monochromeLogo(buf, treatment) };
 });
-
-if (!sets.get("logos").includes(CREST_SOURCE)) fail(`${CREST_SOURCE} is no longer on the old site.`);
-await writeCrest(await download(CREST_SOURCE));
 
 console.log("\nDone. Partner logo sizes for content/partners.ts are listed above.");
 
@@ -183,70 +176,6 @@ async function monochromeLogo(buf, treatment) {
     .toBuffer();
 }
 
-async function writeCrest(buf) {
-  // The old crest is a red disc with dark artwork on a matching dark square. Treat
-  // every pixel as a blend of those two colours and keep "how red" as opacity: the
-  // result is the crest in RVP red on transparency, so its dark parts become whatever
-  // sits behind it (pure black on the landing screen).
-  const { data, info } = await sharp(buf).removeAlpha().raw().toBuffer({ resolveWithObject: true });
-  const backdrop = [...data.subarray(0, 3)]; // top-left corner
-  const red = [209, 15, 43]; // the disc colour in the old file
-  const axis = red.map((c, i) => c - backdrop[i]);
-  const axisLen2 = axis.reduce((sum, c) => sum + c * c, 0);
-
-  const opacity = Buffer.alloc(info.width * info.height);
-  for (let px = 0; px < opacity.length; px++) {
-    let dot = 0;
-    for (let c = 0; c < 3; c++) dot += (data[px * 3 + c] - backdrop[c]) * axis[c];
-    opacity[px] = Math.round(ramp(dot / axisLen2, 0.04, 0.96) * 255);
-  }
-
-  // Crop to the disc with a hair of breathing room, kept square.
-  const box = inkBounds(opacity, info.width, info.height);
-  const side = Math.max(box.width, box.height) + 8;
-  const square = {
-    left: Math.max(0, Math.round(box.left + box.width / 2 - side / 2)),
-    top: Math.max(0, Math.round(box.top + box.height / 2 - side / 2)),
-    width: side,
-    height: side,
-  };
-  const crest = await sharp(solidWithAlpha(RVP_RED, opacity, info.width, info.height), {
-    raw: { width: info.width, height: info.height, channels: 4 },
-  })
-    .extract(square)
-    .png()
-    .toBuffer();
-
-  // One colour plus opacity fits a 256-entry palette exactly, so palette PNGs are lossless here.
-  const PNG8 = { palette: true, colours: 256, dither: 0, compressionLevel: 9 };
-  const png = (size) => sharp(crest).resize(size, size).png(PNG8).toBuffer();
-  const onBlack = async (canvas, size) =>
-    sharp({ create: { width: canvas[0], height: canvas[1], channels: 4, background: "#000" } })
-      .composite([{ input: await png(size), gravity: "centre" }])
-      .png(PNG8)
-      .toBuffer();
-
-  const outDir = path.join(PUBLIC, "logo");
-  await rm(outDir, { recursive: true, force: true });
-  await mkdir(outDir, { recursive: true });
-  await mkdir(APP, { recursive: true });
-
-  const outputs = [
-    [path.join(outDir, "crest.png"), await sharp(crest).png(PNG8).toBuffer()],
-    [path.join(outDir, "crest-160.png"), await png(160)],
-    [path.join(APP, "icon.png"), await png(192)],
-    [path.join(APP, "apple-icon.png"), await onBlack([180, 180], 148)],
-    [path.join(APP, "opengraph-image.png"), await onBlack([1200, 630], 400)],
-    [path.join(APP, "favicon.ico"), ico(await Promise.all([16, 32, 48].map(async (s) => [s, await png(s)])))],
-  ];
-  console.log(`\n/logo/ and app icons (crest is ${side}×${side}px of real detail)`);
-  for (const [file, data] of outputs) {
-    await writeFile(file, data);
-    console.log(`  ✓ ${path.relative(ROOT, file)}`.padEnd(44) + kb(data));
-  }
-  await writeFile(path.join(APP, "opengraph-image.alt.txt"), "Rutgers Venture Partners crest");
-}
-
 // ---------------------------------------------------------------------------
 
 async function fetchOk(url) {
@@ -305,25 +234,6 @@ function inkBounds(opacity, width, height) {
   }
   if (right < 0) fail("Logo came out empty; check its treatment.");
   return { left, top, width: right - left + 1, height: bottom - top + 1 };
-}
-
-// Minimal .ico writer: a directory of PNG images, which every current browser reads.
-function ico(images) {
-  const header = Buffer.alloc(6);
-  header.writeUInt16LE(1, 2);
-  header.writeUInt16LE(images.length, 4);
-  const entries = Buffer.alloc(16 * images.length);
-  let offset = header.length + entries.length;
-  images.forEach(([size, data], i) => {
-    entries.writeUInt8(size, i * 16);
-    entries.writeUInt8(size, i * 16 + 1);
-    entries.writeUInt16LE(1, i * 16 + 4);
-    entries.writeUInt16LE(32, i * 16 + 6);
-    entries.writeUInt32LE(data.length, i * 16 + 8);
-    entries.writeUInt32LE(offset, i * 16 + 12);
-    offset += data.length;
-  });
-  return Buffer.concat([header, entries, ...images.map(([, data]) => data)]);
 }
 
 function kb(buf) {
