@@ -39,7 +39,7 @@ Page copy (hero lines, section text) is in `app/**/page.tsx`.
 Search the repo for `TODO`:
 
 - **`TODO MAILCHIMP`** (`content/site.ts`): the form action URL, bot-trap field name and
-  archive URL for *Into the Ring*. Find them in Mailchimp under Audience → Signup forms →
+  archive URL for *Venture Times*. Find them in Mailchimp under Audience → Signup forms →
   Embedded forms. Until they're set, the subscribe form posts to a placeholder.
 - **`TODO COPY`** (`content/site.ts`): the three "What's in every issue" beats for
   /newsletter. That section stays hidden until they're added.

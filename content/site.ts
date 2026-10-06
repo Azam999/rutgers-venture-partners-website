@@ -6,14 +6,17 @@ export const SITE = {
   // Used for absolute URLs in social previews and the sitemap.
   url: "https://www.rutgersvip.com",
   university: "Rutgers, The State University of New Jersey",
+  newsletter: "Venture Times",
+  instagramHandle: "@rutgers.venture",
 } as const;
+
+const EMAIL = "rutgersvp@gmail.com";
 
 export const LINKS = {
   apply: "https://forms.gle/ghLjEA6eUqcafcUZ6",
-  email: "ruventurecc@gmail.com",
-  partnerInquiry:
-    "mailto:ruventurecc@gmail.com?subject=Partnership%20Inquiry%20-%20Rutgers%20VIP",
-  instagram: "https://instagram.com/ruventurecc",
+  email: EMAIL,
+  partnerInquiry: `mailto:${EMAIL}?subject=Partnership%20Inquiry%20-%20Rutgers%20VIP`,
+  instagram: "https://instagram.com/rutgers.venture",
   linkedin: "https://www.linkedin.com/company/rutgers-venture-capitalist-club/",
 } as const;
 
@@ -38,8 +41,8 @@ export const VIP_APPLICATION = {
   deadline: null as string | null,
 };
 
-// "Into the Ring", the weekly newsletter. The subscribe box is a plain HTML form that
-// posts straight to Mailchimp: no JavaScript, no API route.
+// Venture Times, the weekly newsletter (its name is SITE.newsletter). The subscribe box
+// is a plain HTML form that posts straight to Mailchimp: no JavaScript, no API route.
 // Find all three values in Mailchimp under Audience → Signup forms → Embedded forms.
 export const MAILCHIMP = {
   // TODO MAILCHIMP: the form's `action` URL.

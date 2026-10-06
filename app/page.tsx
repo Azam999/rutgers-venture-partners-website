@@ -90,7 +90,7 @@ export default function HomePage() {
             </article>
             <article className="flex flex-col bg-surface p-8 sm:p-10 lg:col-span-5 lg:p-12">
               <p className="eyebrow">Weekly newsletter</p>
-              <h3 className="mt-5 font-display text-4xl font-medium sm:text-5xl">Into the Ring</h3>
+              <h3 className="mt-5 font-display text-4xl font-medium sm:text-5xl">{SITE.newsletter}</h3>
               <div className="mt-auto pt-10">
                 <SubscribeForm id="home-subscribe" />
                 <Link href="/newsletter/" className="link mt-8 inline-block font-medium">
@@ -142,7 +142,7 @@ export default function HomePage() {
               >
                 <span>
                   <span className="eyebrow block">Instagram</span>
-                  <span className="mt-2 block font-display text-xl">@ruventurecc</span>
+                  <span className="mt-2 block font-display text-xl">{SITE.instagramHandle}</span>
                 </span>
                 <span aria-hidden="true" className="text-stone">↗</span>
               </ExternalLink>

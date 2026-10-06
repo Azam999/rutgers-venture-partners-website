@@ -7,8 +7,8 @@ import { MAILCHIMP, NEWSLETTER_BEATS, SITE } from "@/content/site";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata({
-  title: "Into the Ring",
-  description: `Subscribe to Into the Ring, the weekly newsletter from ${SITE.name}.`,
+  title: SITE.newsletter,
+  description: `Subscribe to ${SITE.newsletter}, the weekly newsletter from ${SITE.name}.`,
   path: "/newsletter/",
 });
 
@@ -17,7 +17,7 @@ export default function NewsletterPage() {
     <>
       <Nav current="/newsletter/" />
       <main id="content" tabIndex={-1} className="scroll-mt-nav focus:outline-none">
-        <PageHero eyebrow="Weekly newsletter" title="Into the Ring">
+        <PageHero eyebrow="Weekly newsletter" title={SITE.newsletter}>
           <p>The weekly newsletter from {SITE.name}.</p>
         </PageHero>
 
@@ -40,7 +40,7 @@ export default function NewsletterPage() {
           </Section>
         )}
 
-        <Section id="subscribe" eyebrow="Into the Ring" title="Subscribe" layout="split">
+        <Section id="subscribe" eyebrow={SITE.newsletter} title="Subscribe" layout="split">
           <div className="border border-cream/10 bg-surface p-6 sm:p-10">
             <SubscribeForm />
           </div>
