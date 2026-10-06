@@ -11,7 +11,7 @@ type MobileMenuProps = {
   applyUrl: string;
 };
 
-// The site's only client component: the menu toggle below the `lg` breakpoint.
+// The menu toggle below the `lg` breakpoint.
 export function MobileMenu({ links, current, applyUrl }: MobileMenuProps) {
   const [open, setOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -19,6 +19,11 @@ export function MobileMenu({ links, current, applyUrl }: MobileMenuProps) {
 
   useEffect(() => {
     if (!open) return;
+
+    // Hold the page still while the menu is open; the panel scrolls on its own if needed.
+    const root = document.documentElement;
+    const previousOverflow = root.style.overflow;
+    root.style.overflow = "hidden";
 
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
@@ -36,6 +41,7 @@ export function MobileMenu({ links, current, applyUrl }: MobileMenuProps) {
     document.addEventListener("keydown", onKeyDown);
     document.addEventListener("pointerdown", onPointerDown);
     return () => {
+      root.style.overflow = previousOverflow;
       document.removeEventListener("keydown", onKeyDown);
       document.removeEventListener("pointerdown", onPointerDown);
     };

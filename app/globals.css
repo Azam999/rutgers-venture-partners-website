@@ -75,6 +75,59 @@
   }
 }
 
+/* Landing → site transition on the home page. Driven by the page's scroll position
+   (not time), so it plays the same whether the visitor glides down, drags the
+   scrollbar or comes back up. The landing is 100svh tall, so 0 → 100svh is the whole
+   move. Browsers without scroll-driven animations just scroll the landing away. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: scroll()) {
+    /* The crest drifts up slower than the page, shrinks a touch and fades out. */
+    .landing-crest {
+      animation: landing-crest linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 100svh;
+    }
+    .landing-cue {
+      animation: landing-fade-out linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 25svh;
+    }
+    /* The opening copy rises into place as the nav arrives. */
+    .landing-reveal {
+      animation: landing-reveal linear both;
+      animation-timeline: scroll(root);
+      animation-range: 30svh 100svh;
+    }
+  }
+}
+
+@keyframes landing-crest {
+  0% {
+    opacity: 1;
+    transform: none;
+  }
+  70% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(32svh) scale(0.86);
+  }
+}
+
+@keyframes landing-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes landing-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(7svh);
+  }
+}
+
 /* Page width and side gutters, shared by every section. */
 @utility wrap {
   width: 100%;

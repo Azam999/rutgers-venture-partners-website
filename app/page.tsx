@@ -33,7 +33,7 @@ export default function HomePage() {
       <Nav current="/" />
 
       <main id="content" tabIndex={-1} className="scroll-mt-nav focus:outline-none">
-        <div className="wrap pb-20 pt-20 sm:pb-24 sm:pt-28 lg:pb-28 lg:pt-36">
+        <div className="landing-reveal wrap pb-20 pt-20 sm:pb-24 sm:pt-28 lg:pb-28 lg:pt-36">
           <p className="eyebrow">Rutgers University</p>
           <h1 className="mt-6 max-w-[14ch] font-display text-display font-medium uppercase tracking-display">
             {SITE.name}

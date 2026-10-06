@@ -71,6 +71,17 @@ To update the logo, replace `public/logo.png` and run `npm run logo`. The curren
 756px; a larger export (1500px+) or an SVG would keep the landing crest perfectly sharp
 on big high-DPI screens.
 
+## The landing screen
+
+The home page opens on the crest alone. The first scroll from there (wheel, trackpad,
+swipe, arrow keys, space or the chevron) glides the page down to the site in one
+smooth move, and scrolling up from the top of the site glides back. Everything below
+the landing scrolls normally. The crest fading out is CSS tied to scroll position.
+
+- Logic: `components/LandingGlide.tsx` (speed and easing are constants at the top).
+- Motion: the `.landing-*` rules in `app/globals.css`.
+- Visitors with "reduce motion" turned on, or without JavaScript, get plain scrolling.
+
 ## Brand
 
 Colours are Tailwind tokens in `app/globals.css` (`rvp-red`, `cream`, `stone` and so on).
