@@ -1,0 +1,136 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand palette */
+  --color-rvp-red: #be1313; /* primary accent, buttons, logo red */
+  --color-red-deep: #7a0d0d; /* hover / pressed red */
+  --color-bg: #0a0a0a; /* page background (the landing screen is pure #000) */
+  --color-surface: #131110; /* cards, subscribe box */
+  --color-cream: #f5f1e4; /* headings, body text on dark */
+  --color-beige: #f5f5dc;
+  --color-beige-2: #f5efe6;
+  --color-stone: #c9c2ac; /* secondary text */
+  --color-stone-dim: #8a8474; /* muted text, placeholders */
+
+  /* The brand's Canva letter-spacing of 85 on uppercase display lines */
+  --tracking-display: 0.085em;
+
+  /* Sticky nav height; also the scroll offset for anchored sections */
+  --spacing-nav: 4.25rem;
+
+  --text-display: clamp(2.6rem, 1.5rem + 4.4vw, 5.25rem);
+  --text-display--line-height: 1.02;
+  --text-title: clamp(2.1rem, 1.55rem + 2.2vw, 3.4rem);
+  --text-title--line-height: 1.04;
+  --text-lead: clamp(1.45rem, 1.15rem + 1.2vw, 2.2rem);
+  --text-lead--line-height: 1.22;
+}
+
+@theme inline {
+  --font-display: var(--font-cormorant), "Iowan Old Style", Georgia, serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-slab: var(--font-alfa-slab), "Rockwell", serif;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    background-color: var(--color-bg);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-cream);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p,
+  li {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background-color: var(--color-rvp-red);
+    color: var(--color-cream);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-cream);
+    outline-offset: 3px;
+  }
+}
+
+/* Page width and side gutters, shared by every section. */
+@utility wrap {
+  width: 100%;
+  max-width: 84rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+
+  @media (width >= 40rem) {
+    padding-inline: 2rem;
+  }
+  @media (width >= 64rem) {
+    padding-inline: 3rem;
+  }
+}
+
+/* Small uppercase label that sits above headings. */
+@utility eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-stone-dim);
+}
+
+/* Inline link: cream text, red underline. Red text alone is too low-contrast on black. */
+@utility link {
+  color: var(--color-cream);
+  text-decoration-line: underline;
+  text-decoration-color: var(--color-rvp-red);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.28em;
+  transition: text-decoration-thickness 150ms;
+
+  &:hover {
+    text-decoration-thickness: 2px;
+  }
+}
+
+/* Primary action: cream on red passes AA (5.6:1). */
+@utility btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: var(--color-rvp-red);
+  color: var(--color-cream);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  padding: 0.6875rem 1.25rem;
+  transition: background-color 150ms;
+
+  &:hover {
+    background-color: var(--color-red-deep);
+  }
+}
