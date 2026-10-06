@@ -74,7 +74,7 @@ on big high-DPI screens.
 ## The landing screen
 
 The home page opens on the crest alone. The first scroll from there (wheel, trackpad,
-swipe, arrow keys, space or the chevron) glides the page down to the site in one
+swipe, arrow keys, space or the arrow at the bottom of the screen) glides the page down to the site in one
 smooth move, and scrolling up from the top of the site glides back. Everything below
 the landing scrolls normally. The crest fading out is CSS tied to scroll position.
 

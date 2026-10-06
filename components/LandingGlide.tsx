@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 
 // Makes leaving the landing screen one smooth motion: the first scroll on the crest
-// (wheel, trackpad, swipe, arrow keys, space, or the chevron) glides the page down to
+// (wheel, trackpad, swipe, arrow keys, space, or the arrow at the bottom) glides the page down to
 // the site, and scrolling up from the top of the site glides back to the crest. Below
 // the landing everything scrolls natively. With JavaScript off, or with reduced motion
 // turned on, the page just scrolls normally.
@@ -196,10 +196,18 @@ export function LandingGlide() {
         // event.detail is 0 for keyboard activation: move focus along like a skip link.
         if (glideDownRef.current?.(event.detail === 0)) event.preventDefault();
       }}
-      className="landing-cue absolute bottom-5 left-1/2 -translate-x-1/2 p-3 text-cream/35 transition-colors hover:text-cream/80"
+      className="landing-cue absolute bottom-5 left-1/2 -translate-x-1/2 p-4 text-cream/80 transition-colors hover:text-cream sm:bottom-7"
     >
-      <svg aria-hidden="true" viewBox="0 0 24 12" fill="none" stroke="currentColor" strokeWidth="1.25" className="w-5">
-        <path d="M2 2l10 8 10-8" />
+      {/* Slender down arrow; it bobs gently (see .landing-cue-arrow in globals.css). */}
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 16 44"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.25"
+        className="landing-cue-arrow h-11 w-4"
+      >
+        <path d="M8 1v41M2 36l6 6 6-6" />
       </svg>
     </a>
   );
