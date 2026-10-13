@@ -38,13 +38,19 @@ Page copy (hero lines, section text) is in `app/**/page.tsx`.
 
 Search the repo for `TODO`:
 
-- **`TODO MAILCHIMP`** (`content/site.ts`): the form action URL, bot-trap field name and
-  archive URL for *Venture Times*. Find them in Mailchimp under Audience → Signup forms →
-  Embedded forms. Until they're set, the subscribe form posts to a placeholder.
 - **`TODO COPY`** (`content/site.ts`): the three "What's in every issue" beats for
   /newsletter. That section stays hidden until they're added.
 - **VIP cohort and deadline** (`VIP_APPLICATION` in `content/site.ts`): the old site's
   "Spring 2026 · February 6, 2026" has passed, so no date is shown.
+
+## Newsletter (Mailchimp)
+
+The subscribe boxes on the home page and /newsletter post straight to the club's
+Mailchimp audience; the "Read the archive" link opens its public list of past issues.
+The three values are in `MAILCHIMP` in `content/site.ts`. If the club ever switches
+audience or account, copy them again from Mailchimp's embed code (Audience → Signup
+forms → Embedded forms). Only paste those values, not the whole embed snippet: the
+site already has its own form, and Mailchimp's snippet adds its own styles and scripts.
 
 ## Images
 

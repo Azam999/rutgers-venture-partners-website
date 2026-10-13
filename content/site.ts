@@ -43,14 +43,16 @@ export const VIP_APPLICATION = {
 
 // Venture Times, the weekly newsletter (its name is SITE.newsletter). The subscribe box
 // is a plain HTML form that posts straight to Mailchimp: no JavaScript, no API route.
-// Find all three values in Mailchimp under Audience → Signup forms → Embedded forms.
+// All three values come from Mailchimp's embed code (Audience → Signup forms → Embedded
+// forms). They're public by design; never put a Mailchimp API key here.
 export const MAILCHIMP = {
-  // TODO MAILCHIMP: the form's `action` URL.
-  formAction: "https://XXXX.usXX.list-manage.com/subscribe/post?u=XXXX&id=XXXX",
-  // TODO MAILCHIMP: name of the hidden bot-trap input, b_<u value>_<id value>.
-  botTrapName: "b_XXXX_XXXX",
-  // TODO MAILCHIMP: public campaign archive (Campaigns → View archive).
-  archiveUrl: "https://usXX.campaign-archive.com/home/?u=XXXX&id=XXXX",
+  // The embed code's <form action="…">, with each `&amp;` written as `&`.
+  formAction:
+    "https://gmail.us6.list-manage.com/subscribe/post?u=8e17dbf4bb836d12f64a813eb&id=71a2934004&f_id=00132fe3f0",
+  // The hidden bot-trap input in the embed code: b_<u>_<id> from the URL above.
+  botTrapName: "b_8e17dbf4bb836d12f64a813eb_71a2934004",
+  // Public list of past issues: same u and id, on the account's us6 server.
+  archiveUrl: "https://us6.campaign-archive.com/home/?u=8e17dbf4bb836d12f64a813eb&id=71a2934004",
 };
 
 export type IssueBeat = { title: string; description: string };
